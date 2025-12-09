@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Raha 💚</title>
     <style>
-        /* --- 1. RESET & CORE --- */
+        /* --- 1. RESET & VARIABLES --- */
         :root {
             --acid-green: #ccff00;
             --dark-green: #064e3b;
-            --glass-bg: rgba(20, 20, 20, 0.6);
+            --glass-bg: rgba(20, 20, 20, 0.65);
             --glass-border: rgba(255, 255, 255, 0.1);
         }
 
@@ -21,9 +21,10 @@
             color: #ffffff;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            padding-bottom: 100px; /* Space for sticky bar */
         }
 
-        /* --- 2. ATMOSPHERE (Background) --- */
+        /* --- 2. BACKGROUND ATMOSPHERE (Instant Viz) --- */
         .atmosphere {
             position: fixed;
             top: 0;
@@ -35,163 +36,151 @@
             overflow: hidden;
         }
 
-        /* Orbs */
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(90px);
+            filter: blur(80px);
             opacity: 0.4;
-            animation: drift 15s ease-in-out infinite alternate;
+            animation: drift 10s ease-in-out infinite alternate;
         }
-        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--dark-green); }
-        .orb-2 { bottom: 10%; right: -5%; width: 40vw; height: 40vw; background: var(--acid-green); opacity: 0.1; }
+        .orb-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--dark-green); }
+        .orb-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: var(--acid-green); opacity: 0.15; }
 
-        /* Floating Particles */
+        /* Floating Particles with NEGATIVE DELAY for instant visibility */
         .floater {
             position: absolute;
-            opacity: 0;
+            font-size: 24px;
+            opacity: 0.7; /* Higher base opacity */
             animation: flyUp linear infinite;
-            z-index: 0;
-            user-select: none;
         }
-        .f1 { left: 10%; animation-duration: 15s; font-size: 30px; }
-        .f2 { left: 85%; animation-duration: 18s; animation-delay: 2s; font-size: 20px; }
-        .f3 { left: 50%; animation-duration: 12s; animation-delay: 5s; font-size: 40px; }
-        .f4 { left: 5%;  animation-duration: 20s; animation-delay: 7s; font-size: 25px; }
         
-        @keyframes drift { 0% { transform: translate(0,0); } 100% { transform: translate(40px, 40px); } }
+        /* Negative delay ensures elements are already on screen on load */
+        .f1 { left: 10%; animation-duration: 15s; animation-delay: -5s; font-size: 30px; }
+        .f2 { left: 85%; animation-duration: 18s; animation-delay: -10s; font-size: 20px; }
+        .f3 { left: 40%; animation-duration: 20s; animation-delay: -2s; font-size: 40px; filter: blur(1px); }
+        .f4 { left: 70%; animation-duration: 12s; animation-delay: -8s; font-size: 25px; }
+        .f5 { left: 20%; animation-duration: 25s; animation-delay: -15s; font-size: 18px; }
+
+        @keyframes drift { 0% { transform: translate(0,0); } 100% { transform: translate(30px, 30px); } }
+        
         @keyframes flyUp { 
-            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; } 
-            15% { opacity: 0.6; } 
-            90% { opacity: 0.6; } 
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } 
+            0% { top: 110%; transform: rotate(0deg); opacity: 0; } 
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { top: -10%; transform: rotate(360deg); opacity: 0; } 
         }
 
-        /* --- 3. RESPONSIVE CONTAINER --- */
-        .wrapper {
-            width: 100%;
-            min-height: 100vh;
-            padding: 40px 20px;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center;
-        }
+        /* --- 3. LAYOUT & GRID --- */
+        .wrapper { width: 100%; min-height: 100vh; padding: 20px 15px; box-sizing: border-box; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1100px; }
 
-        .container {
-            width: 100%;
-            max-width: 1100px; /* Limits width on huge screens */
-        }
-
-        /* --- 4. RESPONSIVE GRID SYSTEM --- */
         .bento-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Mobile Default: 1 Col */
-            gap: 16px;
+            gap: 12px;
+            /* MOBILE DEFAULT: 2 Columns (Compact) */
+            grid-template-columns: 1fr 1fr; 
         }
 
-        /* Tablet / iPad (Min width 600px) */
-        @media (min-width: 600px) {
-            .bento-grid {
-                grid-template-columns: 1fr 1fr; /* 2 Cols */
-            }
-            /* Spanning logic for Tablet */
-            .span-full { grid-column: 1 / -1; } /* Spans full width */
+        /* --- 4. RESPONSIVE BREAKPOINTS --- */
+        
+        /* Mobile Specific (Span full width logic) */
+        .span-full-mobile { grid-column: 1 / -1; }
+
+        /* Tablet (iPad) - Min 600px */
+        @media (min-width: 768px) {
+            .bento-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
             .span-2-tab { grid-column: span 2; }
         }
 
-        /* Desktop / Laptop (Min width 960px) */
-        @media (min-width: 960px) {
-            .bento-grid {
-                grid-template-columns: 1fr 1fr 1fr; /* 3 Cols */
-            }
+        /* Desktop (PC) - Min 1024px */
+        @media (min-width: 1024px) {
+            .bento-grid { grid-template-columns: 1fr 1fr 1fr; }
             .span-2-desk { grid-column: span 2; }
         }
 
         /* --- 5. CARD STYLING --- */
         .card {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 30px;
+            border-radius: 24px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
             position: relative;
             overflow: hidden;
-            min-height: 160px;
         }
 
-        .card:hover {
-            transform: translateY(-5px) scale(1.02);
-            border-color: var(--acid-green);
-            box-shadow: 0 0 30px rgba(204, 255, 0, 0.1);
-        }
+        .card:hover { border-color: var(--acid-green); }
 
         /* Typography */
-        h1 { 
-            font-size: clamp(32px, 5vw, 48px); /* Responsive Font Size */
-            font-weight: 800; 
-            margin-bottom: 10px; 
-            line-height: 1; 
-        }
-        h3 { font-size: 20px; font-weight: 700; margin: 0 0 8px 0; color: #fff; }
-        p { font-size: 15px; line-height: 1.5; color: #b0b0b0; font-weight: 500; margin: 0; }
+        h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; margin: 0 0 10px 0; line-height: 1; }
+        h3 { font-size: 18px; font-weight: 700; margin: 0 0 5px 0; color: #fff; }
+        p { font-size: 13px; line-height: 1.4; color: #b0b0b0; font-weight: 500; margin: 0; }
         .highlight { color: var(--acid-green); }
 
-        /* Animated Stickers */
-        .sticker {
-            font-size: 40px;
-            margin-bottom: 15px;
-            display: inline-block;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
-            animation: bounce 3s ease-in-out infinite;
-        }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        /* Stickers */
+        .sticker { font-size: 32px; margin-bottom: 10px; display: inline-block; animation: bounce 3s ease-in-out infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
-        /* --- SPECIAL CARD VARIANTS --- */
-        
-        /* Hero Card */
+        /* --- SPECIAL CARDS --- */
         .card-hero {
-            background: linear-gradient(135deg, rgba(6, 78, 59, 0.5) 0%, rgba(0,0,0,0.2) 100%);
+            background: linear-gradient(135deg, rgba(6, 78, 59, 0.6) 0%, rgba(0,0,0,0.3) 100%);
             border: 1px solid #064e3b;
-            text-align: center;
-            justify-content: center;
+            text-align: center; padding: 40px 20px;
             align-items: center;
-            padding: 50px 20px;
         }
-
-        /* SOS Card */
-        .card-sos { background: rgba(30, 5, 5, 0.5); border-color: rgba(255, 0, 0, 0.15); }
+        
+        .card-sos { background: rgba(40, 5, 5, 0.5); border-color: rgba(255, 0, 0, 0.2); }
         .card-sos h3 { color: #ff6666; }
-        .card-sos:hover { border-color: #ff4444; }
 
-        /* Footer Card */
-        .card-footer {
-            background: var(--acid-green);
-            color: #000;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            padding: 50px 20px;
-        }
-        .card-footer h2 { color: #000; font-size: 28px; font-weight: 800; margin: 0 0 10px 0; }
-        .card-footer p { color: #000; margin-bottom: 25px; font-weight: 700; }
-
-        /* Download Buttons */
-        .app-buttons { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .store-badge { height: 50px; transition: transform 0.2s; cursor: pointer; }
+        /* --- DOWNLOAD BUTTONS --- */
+        .app-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; }
+        .store-badge { height: 40px; transition: transform 0.2s; cursor: pointer; }
         .store-badge:hover { transform: scale(1.05); }
+
+        /* --- STICKY FLOATING BAR (The UX Fix) --- */
+        .sticky-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(204, 255, 0, 0.9); /* Acid Green */
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.4);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .sticky-text { color: #000; font-weight: 800; font-size: 14px; }
+        .sticky-btn {
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        @keyframes slideUp { from { transform: translate(-50%, 100px); } to { transform: translate(-50%, 0); } }
 
     </style>
 </head>
 <body>
 
-    <!-- Background Animation -->
+    <!-- ATMOSPHERE -->
     <div class="atmosphere">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
@@ -199,21 +188,33 @@
         <div class="floater f2">✨</div>
         <div class="floater f3">🛡️</div>
         <div class="floater f4">🏥</div>
+        <div class="floater f5">⚡️</div>
     </div>
 
-    <!-- Main Content -->
+    <!-- CONTENT -->
     <div class="wrapper">
         <div class="container">
             
             <div class="bento-grid">
 
-                <!-- 1. HERO (Full width on all screens) -->
-                <div class="card card-hero span-full">
+                <!-- 1. HERO (Full Width) -->
+                <!-- Added buttons here so user sees them immediately -->
+                <div class="card card-hero span-full-mobile span-2-tab span-2-desk">
                     <div class="sticker">✌️</div>
                     <h1>Welcome to <span class="highlight">Raha</span></h1>
-                    <p style="color: #d1fae5; max-width: 500px;">
-                        The wellbeing companion where managing health, policies, and claims is finally simple.
+                    <p style="color: #d1fae5; max-width: 500px; margin-bottom: 10px;">
+                        Managing health, policies, and claims is finally simple.
                     </p>
+                    
+                    <!-- Top Buttons for Desktop/Immediate access -->
+                    <div class="app-buttons">
+                        <a href="https://apps.apple.com/in/app/raha-insure/id6743850029" target="_blank">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1280px-Download_on_the_App_Store_Badge.svg.png" alt="App Store" class="store-badge">
+                        </a>
+                        <a href="https://play.google.com/store/apps/details?id=app.rahainsure.com&hl=en_IN" target="_blank">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1280px-Google_Play_Store_badge_EN.svg.png" alt="Google Play" class="store-badge">
+                        </a>
+                    </div>
                 </div>
 
                 <!-- 2. INSTANT ACCESS -->
@@ -221,7 +222,7 @@
                     <div class="sticker">⚡️</div>
                     <div>
                         <h3>Instant Access</h3>
-                        <p>No searching through 100-page PDFs. We keep it 100.</p>
+                        <p>No 100-page PDFs.</p>
                     </div>
                 </div>
 
@@ -230,17 +231,17 @@
                     <div class="sticker">🚨</div>
                     <div>
                         <h3>Smart SOS</h3>
-                        <p>Help is one tap away. No panic, just action.</p>
+                        <p>One tap help.</p>
                     </div>
                 </div>
 
-                <!-- 4. DASHBOARD (Spans 2 cols on Tablet/Desktop) -->
-                <div class="card span-2-tab span-2-desk">
-                    <div style="display:flex; align-items:center; gap: 20px;">
-                        <div class="sticker" style="font-size: 48px; margin:0;">📊</div>
+                <!-- 4. DASHBOARD (Full Width on Mobile too for emphasis) -->
+                <div class="card span-full-mobile span-2-desk">
+                    <div style="display:flex; align-items:center; gap: 15px;">
+                        <div class="sticker" style="font-size: 40px; margin:0;">📊</div>
                         <div>
                             <h3>Unified Dashboard</h3>
-                            <p>All your benefits, limits, and wellness stats in one clean, aesthetic dashboard.</p>
+                            <p>All your benefits and limits in one aesthetic view.</p>
                         </div>
                     </div>
                 </div>
@@ -250,7 +251,7 @@
                     <div class="sticker">🧘‍♂️</div>
                     <div>
                         <h3>Wellbeing</h3>
-                        <p>Health tips, challenges, and main character energy.</p>
+                        <p>Health tips & vibes.</p>
                     </div>
                 </div>
 
@@ -258,50 +259,38 @@
                 <div class="card">
                     <div class="sticker">🏥</div>
                     <div>
-                        <h3>Cashless Care</h3>
-                        <p>Hospitals, bookings, and support made effortless.</p>
+                        <h3>Cashless</h3>
+                        <p>Easy bookings.</p>
                     </div>
                 </div>
 
                 <!-- 7. RAKSHA CHAT -->
-                <div class="card" style="background: rgba(10, 20, 40, 0.5); border-color: rgba(50, 100, 200, 0.2);">
-                    <div class="sticker">🤖</div>
-                    <div>
-                        <h3 style="color: #60a5fa;">Chat w/ Raksha</h3>
-                        <p>Your personal support AI. Always online.</p>
+                <div class="card span-full-mobile" style="background: rgba(10, 20, 40, 0.5); border-color: rgba(50, 100, 200, 0.2);">
+                    <div style="display:flex; align-items:center; gap: 15px;">
+                        <div class="sticker" style="font-size: 35px; margin:0;">🤖</div>
+                        <div>
+                            <h3 style="color: #60a5fa;">Chat w/ Raksha</h3>
+                            <p>Your 24/7 AI assistant.</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 8. TRACK CLAIMS -->
-                <div class="card">
+                <div class="card span-full-mobile">
                     <div class="sticker">🔎</div>
-                    <div>
-                        <h3>Track Claims</h3>
-                        <p>Clear, transparent updates. No ghosting.</p>
-                    </div>
-                </div>
-
-                <!-- 9. FOOTER (Full width on all screens) -->
-                <div class="card card-footer span-full">
-                    <div>
-                        <h2>Peace of mind is attractive. 😌</h2>
-                        <p>Get the Raha experience on your phone today.</p>
-                    </div>
-                    
-                    <div class="app-buttons">
-                        <a href="https://apps.apple.com/in/app/raha-insure/id6743850029" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/1280px-Download_on_the_App_Store_Badge.svg.png" 
-                                 alt="Download on the App Store" class="store-badge">
-                        </a>
-                        <a href="https://play.google.com/store/apps/details?id=app.rahainsure.com&hl=en_IN" target="_blank">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1280px-Google_Play_Store_badge_EN.svg.png" 
-                                 alt="Get it on Google Play" class="store-badge">
-                        </a>
-                    </div>
+                    <h3>Track Claims</h3>
+                    <p>Transparent updates. No ghosting.</p>
                 </div>
 
             </div>
         </div>
+    </div>
+
+    <!-- STICKY BOTTOM BAR (Visible on Scroll) -->
+    <div class="sticky-bar">
+        <div class="sticky-text">Get Raha App ⚡️</div>
+        <!-- Link to generic download or one specific store based on OS logic, here linking to App Store as example -->
+        <a href="https://apps.apple.com/in/app/raha-insure/id6743850029" class="sticky-btn">Download</a>
     </div>
 
 </body>
