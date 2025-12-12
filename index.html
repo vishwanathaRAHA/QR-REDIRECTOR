@@ -7,7 +7,8 @@
     <style>
         /* --- 1. RESET & VARIABLES --- */
         :root {
-            --acid-green: #ccff00;
+            /* Updated Brand Color: #2ec697 */
+            --brand-color: #2ec697; 
             --dark-green: #064e3b;
             --glass-bg: rgba(20, 20, 20, 0.65);
             --glass-border: rgba(255, 255, 255, 0.1);
@@ -44,7 +45,8 @@
             animation: drift 10s ease-in-out infinite alternate;
         }
         .orb-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--dark-green); }
-        .orb-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: var(--acid-green); opacity: 0.15; }
+        /* Orb 2 now uses the new brand color */
+        .orb-2 { bottom: 20%; right: -10%; width: 50vw; height: 50vw; background: var(--brand-color); opacity: 0.15; }
 
         .floater {
             position: absolute;
@@ -104,12 +106,15 @@
             overflow: hidden;
         }
 
-        .card:hover { border-color: var(--acid-green); }
+        /* Hover border is now the new color */
+        .card:hover { border-color: var(--brand-color); }
 
         h1 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; margin: 0 0 10px 0; line-height: 1; }
         h3 { font-size: 18px; font-weight: 700; margin: 0 0 5px 0; color: #fff; }
         p { font-size: 13px; line-height: 1.4; color: #b0b0b0; font-weight: 500; margin: 0; }
-        .highlight { color: var(--acid-green); }
+        
+        /* Highlight Class using the new variable */
+        .highlight { color: var(--brand-color); }
 
         .sticker { font-size: 32px; margin-bottom: 10px; display: inline-block; animation: bounce 3s ease-in-out infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
@@ -136,7 +141,8 @@
             transform: translateX(-50%);
             width: 90%;
             max-width: 420px;
-            background: rgba(204, 255, 0, 0.95);
+            /* Using #2ec697 with opacity for glass effect */
+            background: rgba(46, 198, 151, 0.95); 
             backdrop-filter: blur(12px);
             padding: 10px 15px;
             border-radius: 50px;
@@ -145,7 +151,7 @@
             align-items: center;
             z-index: 100;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.3);
             animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
@@ -213,6 +219,7 @@
                 <!-- HERO -->
                 <div class="card card-hero span-full-mobile span-2-tab span-2-desk">
                     <div class="sticker">✌️</div>
+                    <!-- Highlight class now uses #2ec697 -->
                     <h1>Welcome to <span class="highlight">Raha</span></h1>
                     <p style="color: #d1fae5; max-width: 500px; margin-bottom: 10px;">
                         Managing health, policies, and claims is finally simple.
@@ -290,7 +297,7 @@
         </div>
     </div>
 
-    <!-- STICKY BOTTOM BAR -->
+    <!-- STICKY BOTTOM BAR (Updated Color) -->
     <div class="sticky-bar">
         <span class="sticky-text">Get Raha ⚡️</span>
         <div class="sticky-actions">
